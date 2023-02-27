@@ -54,7 +54,7 @@
 #define MAX_HW_FIFO_DEPTH 16                     /* FIFO is 16 words deep */
 #define MAX_HW_FIFO_SIZE (MAX_HW_FIFO_DEPTH * 4) /* FIFO is 32 bits wide  */
 
-/* Global FIPS status  */
+/* Global FIPS status
 #ifdef CONFIG_FIPS_ENABLE
 enum fips_status g_fips140_status = FIPS140_STATUS_FAIL;
 EXPORT_SYMBOL(g_fips140_status);
@@ -63,7 +63,7 @@ EXPORT_SYMBOL(g_fips140_status);
 enum fips_status g_fips140_status = FIPS140_STATUS_NA;
 EXPORT_SYMBOL(g_fips140_status);
 
-#endif
+#endif */
 
 /*FIPS140-2 call back for DRBG self test */
 void *drbg_call_back;
