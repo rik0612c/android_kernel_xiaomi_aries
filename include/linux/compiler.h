@@ -166,7 +166,17 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
 
 #include <linux/types.h>
 
-static __always_inline void __read_once_size(const volatile void *p, void *res, int size)
+static __always_inline void data_access_exceeds_word_size(void)
+#ifdef __compiletime_warning
+__compiletime_warning("data access exceeds word size and won't be atomic")
+#endif
+;
+
+static __always_inline void data_access_exceeds_word_size(void)
+{
+}
+
+static __always_inline void __read_once_size(volatile void *p, void *res, int size)
 {
 	switch (size) {
 	case 1: *(__u8 *)res = *(volatile __u8 *)p; break;
@@ -175,6 +185,7 @@ static __always_inline void __read_once_size(const volatile void *p, void *res, 
 	default:
 		barrier();
 		__builtin_memcpy((void *)res, (const void *)p, size);
+		data_access_exceeds_word_size();
 		barrier();
 	}
 }
@@ -188,6 +199,7 @@ static __always_inline void __assign_once_size(volatile void *p, void *res, int 
 	default:
 		barrier();
 		__builtin_memcpy((void *)p, (const void *)res, size);
+		data_access_exceeds_word_size();
 		barrier();
 	}
 }
